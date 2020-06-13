@@ -55,7 +55,7 @@ class ModelAdapter: AdvancedRecyclerViewAdapter() {
 use `AdvancedViewHolder` or `AdvancedDataBindingViewHolder` with data-binding <br/>
 `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
 `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
-`AdvancedDataBindingViewHolder.getVariable()' If you use data-binding, you should return variable set
+`AdvancedDataBindingViewHolder.getVariable()` If you use data-binding, you should return variable set
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
