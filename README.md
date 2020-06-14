@@ -12,24 +12,30 @@ This aims to advance the use of `RecyclerView`.
 ## Demo
 
 ![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot.gif)
-![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot-scroll-changed.png)
+
+### Sample animator
 
 Alpha, Scroll interpolate, Rotation
+
+```kotlin
+override fun onScrollChanged() {
+    super.onScrollChanged()
+    val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
+    itemView.alpha = 0.5f + 0.5f * alphaBias
+    itemView.translationY = scrolled[0] * 3f * motionBias
+    itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+}
+```
+
+> `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
+> `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
 
 <br/><br/>
 
 ## How to use
 
-### Main
-```kotlin
-val adapter = ModelAdapter()
-recyclerView.adapter = adapter
-adapter.transaction {
-    it.addAll(items = models)
-}
-```
+### Layout
 
-### Xml
 ```xml
 <kim.uno.recyclerview.widget.AdvancedRecyclerView
     android:layout_width="match_parent"
@@ -37,31 +43,29 @@ adapter.transaction {
 ```
 
 ### ModelAdapter
+
+To use multiple holders, return depending on the view type
+
 ```kotlin
 class ModelAdapter: AdvancedRecyclerViewAdapter() {
 
     override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
-        return when (viewType) {
-            0 -> ModelHolder(this)
-            else -> null!!
-        }
+        return ModelHolder(this)
     }
 
 }
 ```
 
-### MainHolder with data-binding
+### ModelHolder
 
-use `AdvancedViewHolder` or `AdvancedDataBindingViewHolder` with data-binding <br/>
-`viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
-`motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
-`AdvancedDataBindingViewHolder.getVariable()` If you use data-binding, you should return variable set
+Instead of `RecyclerView.ViewHolder` <br/>
+`AdvancedViewHolder` basic <br/>
+`AdvancedDataBindingViewHolder` with data-binding
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
     : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_holder) {
 
-    // Scroll animator
     override fun onScrollChanged() {
         super.onScrollChanged()
         val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
@@ -70,15 +74,16 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
 
-    // Data-binding
-    override fun getVariable(): ArrayMap<Int, Any> {
-        return ArrayMap<Int, Any>().apply {
-            put(BR.model, item)
-        }
-    }
+    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
 
 }
 ```
+
+> `onScrollChanged()` Responds to scroll changes
+> `getVariable()` You should return variable-set for data-binding
+> `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
+> `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
+
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -120,37 +125,38 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 </layout>
 ```
 
-### Set data with DiffUtil
-
-Without adapter `notifyDataSetChanged` like something <br/>
-DiffUtill `calculateDiff` and `dispatchUpdatesTo` work automatically
+### Main
 
 ```kotlin
-adapter.transaction { adapter ->
-    // TODO adapter data change
-    // ex) adapter.add(0), adapter.removeAt(1) ..
+recyclerview.adapter = ModelAdapter().apply {
+    notifyDataSetChanged {
+        it.addAll(items = models)
+    }
 }
 ```
 
-#### Adapter data change
+### Adapter data change
 
-```kotlin
-// index: Add to the index
-// item: bind data
-// type: Create a holder of view type
-adapter.add(index: Int, item: Any, type: Int)
+#### Add
 
-// Add all to the index
-adapter.addAll(index: Int, items: ArrayList<*>, type: Int)
+`adapter.add(index: Int, item: Any, type: Int)` <br/>
+`adapter.addAll(index: Int, items: ArrayList<*>, type: Int)`
 
-// Remove a model
-adapter.remove(item: Any)
+> `index` Add to the index
+> `item` bind data
+> `type` Create a holder of view type
 
-// Remove at index
-adatper.remoteAt(index: Int)
-```
+#### Remove
 
-#### Model
+`adapter.remove(item: Any)`
+`adatper.remoteAt(index: Int)`
+
+### Set data with DiffUtil
+
+Without `adapter.notifyDataSetChanged()` <br/>
+DiffUtill `calculateDiff` and `dispatchUpdatesTo` work automatically
+
+#### Inject annotation into the model
 
 `@ItemDiffField` DiffUtil.areItemsTheSame <br/>
 `@ContentsDiffField` DiffUtil.areContentsTheSame
@@ -170,4 +176,15 @@ data class Model(
     var createdDate: String
 
 )
+```
+
+#### NotifyDataSetChanged
+
+`adapter.notifyDataSetChanged(unit)` Detect changes in this block
+
+```kotlin
+adapter.notifyDataSetChanged { adapter ->
+    // TODO adapter data change
+    // ex) adapter.add(0), adapter.removeAt(1) ..
+}
 ```

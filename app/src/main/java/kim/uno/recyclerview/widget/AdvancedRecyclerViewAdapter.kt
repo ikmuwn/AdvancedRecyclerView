@@ -45,7 +45,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         holders.remove(holder)
     }
 
-    fun transaction(unit: (AdvancedRecyclerViewAdapter) -> Unit) {
+    fun notifyDataSetChanged(unit: (AdvancedRecyclerViewAdapter) -> Unit) {
         val transactionItems = ArrayList(items)
         val transactionTypes = ArrayList(types)
 

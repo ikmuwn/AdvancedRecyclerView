@@ -19,10 +19,6 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
 
-    override fun getVariable(): ArrayMap<Int, Any> {
-        return ArrayMap<Int, Any>().apply {
-            put(BR.model, item)
-        }
-    }
+    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
 
 }

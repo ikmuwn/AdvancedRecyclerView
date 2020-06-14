@@ -25,13 +25,12 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val adapter = ModelAdapter()
-        itemView.recycler_view.adapter = adapter
-
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.models(this) { models ->
-            adapter.transaction {
-                it.addAll(items = models!!)
+        itemView.recycler_view.adapter = ModelAdapter().apply {
+            viewModel = ViewModelProviders.of(this@MainFragment).get(MainViewModel::class.java)
+            viewModel.models(this@MainFragment) { models ->
+                notifyDataSetChanged {
+                    it.addAll(items = models!!)
+                }
             }
         }
     }
