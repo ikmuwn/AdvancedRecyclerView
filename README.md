@@ -84,6 +84,7 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 > `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
 > `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
 
+<br/>
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -142,13 +143,13 @@ recyclerview.adapter = ModelAdapter().apply {
 `adapter.add(index: Int, item: Any, type: Int)` <br/>
 `adapter.addAll(index: Int, items: ArrayList<*>, type: Int)`
 
-> `index` Add to the index
-> `item` bind data
+> `index` Add to the index <br/>
+> `item` bind data <br/>
 > `type` Create a holder of view type
 
 #### Remove
 
-`adapter.remove(item: Any)`
+`adapter.remove(item: Any)` <br/>
 `adatper.remoteAt(index: Int)`
 
 ### Set data with DiffUtil
