@@ -42,6 +42,8 @@ override fun onScrollChanged() {
     android:layout_height="match_parent"/>
 ```
 
+<br/>
+
 ### ModelAdapter
 
 To use multiple holders, return depending on the view type
@@ -55,6 +57,8 @@ class ModelAdapter: AdvancedRecyclerViewAdapter() {
 
 }
 ```
+
+<br/>
 
 ### ModelHolder
 
@@ -79,8 +83,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 }
 ```
 
-> `onScrollChanged()` Responds to scroll changes
-> `getVariable()` You should return variable-set for data-binding
+> `onScrollChanged()` Responds to scroll changes <br/>
+> `getVariable()` You should return variable-set for data-binding <br/>
 > `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
 > `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
 
@@ -126,6 +130,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 </layout>
 ```
 
+<br/>
+
 ### Main
 
 ```kotlin
@@ -135,6 +141,8 @@ recyclerview.adapter = ModelAdapter().apply {
     }
 }
 ```
+
+<br/>
 
 ### Adapter data change
 
@@ -151,6 +159,8 @@ recyclerview.adapter = ModelAdapter().apply {
 
 `adapter.remove(item: Any)` <br/>
 `adatper.remoteAt(index: Int)`
+
+<br/>
 
 ### Set data with DiffUtil
 
