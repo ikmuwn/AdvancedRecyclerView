@@ -120,7 +120,7 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 </layout>
 ```
 
-### Set data with DifUtill
+### Set data with DiffUtil
 
 Without adapter `notifyDataSetChanged` like something <br/>
 DiffUtill `calculateDiff` and `dispatchUpdatesTo` work automatically
