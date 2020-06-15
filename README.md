@@ -146,19 +146,19 @@ recyclerview.adapter = ModelAdapter().apply {
 
 ### Adapter data change
 
-#### Add
+#### Add it to the adapter
 
-`adapter.add(index: Int, item: Any, type: Int)` <br/>
-`adapter.addAll(index: Int, items: ArrayList<*>, type: Int)`
+`add(index: Int, item: Any, type: Int)` <br/>
+`addAll(index: Int, items: ArrayList<*>, type: Int)`
 
 > `index` Add to the index <br/>
 > `item` bind data <br/>
 > `type` Create a holder of view type
 
-#### Remove
+#### Remove it from the adapter
 
-`adapter.remove(item: Any)` <br/>
-`adatper.remoteAt(index: Int)`
+`remove(item: Any)` <br/>
+`remoteAt(index: Int)`
 
 <br/>
 
@@ -189,7 +189,7 @@ data class Model(
 )
 ```
 
-#### NotifyDataSetChanged
+#### Instead of NotifyDataSetChanged
 
 `adapter.notifyDataSetChanged(unit)` Detect changes in this block
 
