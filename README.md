@@ -3,8 +3,8 @@
 This aims to advance the use of `RecyclerView`.
 
 * Simplify the use of `Multiple ViewHolder`
-* It is easy to use `Data-binding` to `ViewHolder`
-* You can easily apply `DiffUtil` as `Annotation`
+* It is easy to use `Data-binding` to ViewHolder
+* You can easily apply `DiffUtil` as Annotation
 * Various animations can be applied to the list (Inspired by `PageTransformer`)
 
 <br/><br/>
