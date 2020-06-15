@@ -158,7 +158,7 @@ recyclerview.adapter = ModelAdapter().apply {
 #### Remove it from the adapter
 
 `remove(item: Any)` <br/>
-`remoteAt(index: Int)`
+`removeAt(index: Int)`
 
 <br/>
 
