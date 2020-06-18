@@ -160,6 +160,10 @@ recyclerview.adapter = ModelAdapter().apply {
 `remove(item: Any)` <br/>
 `removeAt(index: Int)`
 
+#### Clear
+
+`clear()`
+
 <br/>
 
 ### Set data with DiffUtil

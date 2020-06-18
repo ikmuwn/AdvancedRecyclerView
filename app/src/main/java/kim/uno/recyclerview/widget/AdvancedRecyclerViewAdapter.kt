@@ -83,5 +83,9 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         return false
     }
 
+    fun clear() {
+        items.clear()
+        types.clear()
+    }
 
 }
