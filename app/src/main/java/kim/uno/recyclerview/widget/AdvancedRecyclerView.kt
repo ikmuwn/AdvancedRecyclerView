@@ -24,7 +24,7 @@ class AdvancedRecyclerView : RecyclerView {
     var scrollUnit: ((Int) -> Unit)? = null
 
     var motion = FloatArray(2)
-    var motionIdleAnimator: Animator? = null
+    private var motionIdleAnimator: Animator? = null
 
     init {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -1,6 +1,6 @@
 # What is AdvancedRecyclerView
 
-This aims to advance the use of `RecyclerView`.
+This aims to advance the use of `RecyclerView` for android.
 
 * Simplify the use of `Multiple ViewHolder`
 * It is easy to use `Data-binding` to ViewHolder
@@ -13,22 +13,48 @@ This aims to advance the use of `RecyclerView`.
 
 ![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot.gif)
 
-### Sample animator
+<br/>
 
-Alpha, Scroll interpolate, Rotation
+`onScrollChanged` Alpha, Scroll interpolate, Rotation
 
 ```kotlin
-override fun onScrollChanged() {
-    super.onScrollChanged()
-    val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
-    itemView.alpha = 0.5f + 0.5f * alphaBias
-    itemView.translationY = scrolled[0] * 3f * motionBias
-    itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_holder) {
+
+    override fun onScrollChanged() {
+        super.onScrollChanged()
+        val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
+        itemView.alpha = 0.5f + 0.5f * alphaBias
+        itemView.translationY = scrolled[0] * 3f * motionBias
+        itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+    }
+
+    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
+
 }
 ```
 
-> `viewBias` return itemView bias on the screen (start 0f ~ 1f end) <br/>
-> `motionBias` return itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
+<br/><br/>
+
+## How to supported for animator
+
+### AdvancedViewRecyclerView
+
+`scrollUnit : (Int) -> Unit` As you scroll, values are passed by orientation
+
+```kotlin
+recyclerView.scrollUnit = { scroll ->
+    // TODO
+}
+```
+
+<br/>
+
+### AdvancedViewRecyclerView, AdvancedViewHolder
+
+`viewBias: Float` itemView bias on the screen (start 0f ~ 1f end) <br/>
+`motionBias: Float` itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
+`scrolled: Array<Int>(10)` recent scrolled value
 
 <br/><br/>
 
@@ -53,6 +79,15 @@ class ModelAdapter: AdvancedRecyclerViewAdapter() {
 
     override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
         return ModelHolder(this)
+
+        /* multiple holders
+        return when (viewType) {
+            TYPE_1 -> ModelHolder1(this)
+            TYPE_2 -> ModelHolder2(this)
+            TYPE_3 -> ModelHolder3(this)
+            else -> ModelHolder(this)
+        }
+        */
     }
 
 }
@@ -64,7 +99,7 @@ class ModelAdapter: AdvancedRecyclerViewAdapter() {
 
 Instead of `RecyclerView.ViewHolder` <br/>
 `AdvancedViewHolder` basic <br/>
-`AdvancedDataBindingViewHolder` with data-binding
+`AdvancedDataBindingViewHolder : AdvancedViewHolder` with data-binding
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
