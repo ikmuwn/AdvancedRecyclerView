@@ -52,9 +52,10 @@ recyclerView.scrollUnit = { scroll ->
 
 ### AdvancedViewRecyclerView, AdvancedViewHolder
 
+`scroll: Int` Scroll value from start) <br/>
+`scrolled: Array<Int>(10)` Recent the difference from the previous scroll value) <br/>
 `viewBias: Float` itemView bias on the screen (start 0f ~ 1f end) <br/>
-`motionBias: Float` itemView bias on the screen from touch point (start 0f ~ 1f end) <br/>
-`scrolled: Array<Int>(10)` recent scrolled value
+`motionBias: Float` itemView bias on the screen from touch point (start 0f ~ 1f end)
 
 <br/><br/>
 
