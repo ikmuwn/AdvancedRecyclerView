@@ -9,13 +9,13 @@ This aims to advance the use of `RecyclerView` for android.
 
 <br/><br/>
 
-## Demo
+## Demo; Scroll with tension
 
 ![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot.gif)
 
 <br/>
 
-`onScrollChanged` Alpha, Scroll interpolate, Rotation
+Alpha, Scroll interpolate, Rotation
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
@@ -27,6 +27,33 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.alpha = 0.5f + 0.5f * alphaBias
         itemView.translationY = scrolled[0] * 3f * motionBias
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+    }
+
+    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
+
+}
+```
+
+<br/><br/>
+
+## Demo; Parallax scroll
+
+![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot-1.gif)
+
+<br/>
+
+`onScrollChanged` Alpha, Scroll interpolate, Rotation
+
+```kotlin
+class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_parallax_holder) {
+
+    val parallaxRange = (itemView.iv_parallax.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin / 2
+
+    override fun onScrollChanged() {
+        super.onScrollChanged()
+
+        itemView.iv_parallax.translationY = parallaxRange * viewBias
     }
 
     override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
