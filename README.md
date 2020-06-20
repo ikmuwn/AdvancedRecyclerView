@@ -52,7 +52,6 @@ class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
 
     override fun onScrollChanged() {
         super.onScrollChanged()
-
         itemView.iv_parallax.translationY = parallaxRange * viewBias
     }
 
