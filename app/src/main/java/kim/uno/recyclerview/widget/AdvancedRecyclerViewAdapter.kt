@@ -49,7 +49,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         holders.remove(holder)
     }
 
-    fun notifyDataSetChanged(unit: (AdvancedRecyclerViewAdapter) -> Unit) {
+    fun notifyDataSetChanged(detectMoves: Boolean = true, unit: (AdvancedRecyclerViewAdapter) -> Unit) {
         val transactionItems = ArrayList(items)
         val transactionTypes = ArrayList(types)
 
@@ -57,7 +57,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         DiffUtil.calculateDiff(AdvancedRecyclerViewDiffCallback(
                 transactionItems, transactionTypes,
                 items, types
-        )).dispatchUpdatesTo(this)
+        ), detectMoves).dispatchUpdatesTo(this)
     }
 
     fun add(index: Int = items.size, item: Any = Any(), type: Int = 0) {
