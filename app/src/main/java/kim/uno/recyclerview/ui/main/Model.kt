@@ -6,7 +6,6 @@ import kim.uno.recyclerview.widget.ItemDiffField
 data class Model(
 
     @ItemDiffField
-    @ContentsDiffField
     var title: String,
 
     @ContentsDiffField

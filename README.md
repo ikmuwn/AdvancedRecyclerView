@@ -231,7 +231,7 @@ recyclerview.adapter = ModelAdapter().apply {
 ### Set data with DiffUtil
 
 Without `adapter.notifyDataSetChanged()` <br/>
-DiffUtill `calculateDiff` and `dispatchUpdatesTo` work automatically
+DiffUtil `calculateDiff` and `dispatchUpdatesTo` work automatically
 
 #### Inject annotation into the model
 

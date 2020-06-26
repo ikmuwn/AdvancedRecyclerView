@@ -8,7 +8,7 @@ import kotlin.math.abs
 abstract class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, resId: Int)
     : RecyclerView.ViewHolder(LayoutInflater.from(adapter.recyclerView!!.context).inflate(resId, adapter.recyclerView, false)) {
 
-    open fun onBindView(item: ITEM, position: Int) {
+    open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any> = ArrayList()) {
         onScrollChanged()
     }
 

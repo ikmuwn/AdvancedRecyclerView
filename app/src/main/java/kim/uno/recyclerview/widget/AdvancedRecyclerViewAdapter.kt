@@ -19,8 +19,12 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int) {
+    final override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int) {
         holder.onBindView(items[position], position)
+    }
+
+    override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int, payloads: MutableList<Any>) {
+        holder.onBindView(items[position], position, payloads)
     }
 
     override fun getItemViewType(position: Int) = types[position]

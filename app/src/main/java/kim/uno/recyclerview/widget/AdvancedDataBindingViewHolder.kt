@@ -10,8 +10,8 @@ abstract class AdvancedDataBindingViewHolder<ITEM>(adapter: AdvancedRecyclerView
     private var viewDataBinding: ViewDataBinding = DataBindingUtil.bind(itemView)!!
     abstract fun getVariable(): ArrayMap<Int, Any>
 
-    override fun onBindView(item: ITEM, position: Int) {
-        super.onBindView(item, position)
+    override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
         viewDataBinding.apply {
             getVariable().forEach { variable ->
                 setVariable(variable.key, variable.value)
