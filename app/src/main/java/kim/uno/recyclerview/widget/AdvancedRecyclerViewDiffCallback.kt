@@ -11,14 +11,12 @@ annotation class ItemDiffField
 annotation class ContentsDiffField
 
 class AdvancedRecyclerViewDiffCallback(
-        private val beforeItems: ArrayList<Any>,
-        private val beforeTypes: ArrayList<Int>,
-        private val afterItems: ArrayList<Any>,
-        private val afterTypes: ArrayList<Int>
+        private val before: ArrayList<Pair<Int, Any>>,
+        private val after: ArrayList<Pair<Int, Any>>
 ) : DiffUtil.Callback() {
 
-    override fun getOldListSize() = beforeItems.size
-    override fun getNewListSize() = afterItems.size
+    override fun getOldListSize() = before.size
+    override fun getNewListSize() = after.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return areSame(oldItemPosition, newItemPosition, ItemDiffField::class.java, false)
@@ -29,21 +27,18 @@ class AdvancedRecyclerViewDiffCallback(
     }
 
     private fun areSame(oldItemPosition: Int, newItemPosition: Int, clazz: Class<out Annotation>, default: Boolean): Boolean {
-        val beforeItem = beforeItems[oldItemPosition]
-        val beforeType = beforeTypes[oldItemPosition]
-        val afterItem = afterItems[newItemPosition]
-        val afterType = afterTypes[newItemPosition]
-        if (beforeItem.javaClass.name == afterItem.javaClass.name && beforeType == afterType) {
+        val before = before[oldItemPosition]
+        val after = after[newItemPosition]
+        if (before.second.javaClass.name == after.second.javaClass.name && before.first == after.first) {
             var isAnnotationPresent = default
-
-            beforeItem.javaClass.declaredFields
+            before.second.javaClass.declaredFields
                     .filter { it.isAnnotationPresent(clazz) }
                     .forEach {
                         isAnnotationPresent = true
 
                         it.isAccessible = true
-                        val beforeValue = it.get(beforeItem)
-                        val afterValue = it.get(afterItem)
+                        val beforeValue = it.get(before.second)
+                        val afterValue = it.get(after.second)
                         it.isAccessible = false
 
                         if (beforeValue != afterValue) {
@@ -57,16 +52,16 @@ class AdvancedRecyclerViewDiffCallback(
     }
 
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-        val beforeItem = beforeItems[oldItemPosition]
-        val afterItem = afterItems[newItemPosition]
-        if (beforeItem.javaClass.name == afterItem.javaClass.name) {
+        val before = before[oldItemPosition]
+        val after = after[newItemPosition]
+        if (before.second.javaClass.name == after.second.javaClass.name) {
             val payload = ArrayList<String>()
-            beforeItem.javaClass.declaredFields
+            before.second.javaClass.declaredFields
                     .filter { it.isAnnotationPresent(ContentsDiffField::class.java) }
                     .forEach {
                         it.isAccessible = true
-                        val beforeValue = it.get(beforeItem)
-                        val afterValue = it.get(afterItem)
+                        val beforeValue = it.get(before.second)
+                        val afterValue = it.get(after.second)
                         if (beforeValue != afterValue) payload.add(it.name)
                         it.isAccessible = false
                     }

@@ -15,7 +15,7 @@ abstract class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter
     open fun onScrollChanged() {}
 
     val item: ITEM
-        get() = adapter.items[adapterPosition] as ITEM
+        get() = adapter.items[adapterPosition].second as ITEM
 
     val beforeItemViewType: Int
         get() = if (adapterPosition > 0) adapter.getItemViewType(adapterPosition - 1) else -1

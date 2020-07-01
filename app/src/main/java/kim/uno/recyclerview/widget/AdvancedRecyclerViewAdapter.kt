@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHolder<Any>>() {
 
     var recyclerView: RecyclerView? = null
-    var items = ArrayList<Any>()
-    var types = ArrayList<Int>()
-
-    val holders = ArrayList<AdvancedViewHolder<Any>>()
+    var items = ArrayList<Pair<Int, Any>>()
+    val holders = ArrayList<AdvancedViewHolder<*>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> =
             onCreateHolder(viewType) as AdvancedViewHolder<Any>
@@ -20,14 +18,14 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     override fun getItemCount() = items.size
 
     final override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int) {
-        holder.onBindView(items[position], position)
+        holder.onBindView(items[position].second, position)
     }
 
     override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int, payloads: MutableList<Any>) {
-        holder.onBindView(items[position], position, payloads)
+        holder.onBindView(items[position].second, position, payloads)
     }
 
-    override fun getItemViewType(position: Int) = types[position]
+    override fun getItemViewType(position: Int) = items[position].first
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -50,19 +48,17 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     }
 
     fun notifyDataSetChanged(detectMoves: Boolean = true, unit: (AdvancedRecyclerViewAdapter) -> Unit) {
-        val transactionItems = ArrayList(items)
-        val transactionTypes = ArrayList(types)
+        val transactionPairs = ArrayList(items)
 
         unit(this)
-        DiffUtil.calculateDiff(AdvancedRecyclerViewDiffCallback(
-                transactionItems, transactionTypes,
-                items, types
-        ), detectMoves).dispatchUpdatesTo(this)
+        DiffUtil.calculateDiff(
+                AdvancedRecyclerViewDiffCallback(transactionPairs, items),
+                detectMoves
+        ).dispatchUpdatesTo(this)
     }
 
     fun add(index: Int = items.size, item: Any = Any(), type: Int = 0) {
-        items.add(index, item)
-        types.add(index, type)
+        items.add(index, type to item)
     }
 
     fun addAll(index: Int = this.items.size, items: ArrayList<*>, type: Int = 0) {
@@ -70,26 +66,21 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     }
 
     fun remove(item: Any): Boolean {
-        items.indexOf(item).let { index ->
-            return removeAt(index)
-        }
-
-        return false
+        return items.firstOrNull {
+            it.first == item
+        }?.let {
+            items.remove(it)
+        } ?: false
     }
 
     fun removeAt(index: Int): Boolean {
-        if (index > -1 && index < items.size) {
-            items.removeAt(index)
-            types.removeAt(index)
-            return true
-        }
-
-        return false
+        val hasIndex = index > -1 && index < items.size
+        if (hasIndex) items.removeAt(index)
+        return hasIndex
     }
 
     fun clear() {
         items.clear()
-        types.clear()
     }
 
 }
