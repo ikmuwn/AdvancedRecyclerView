@@ -8,20 +8,23 @@ import kotlin.math.abs
 abstract class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, resId: Int)
     : RecyclerView.ViewHolder(LayoutInflater.from(adapter.recyclerView!!.context).inflate(resId, adapter.recyclerView, false)) {
 
-    open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any> = ArrayList()) {
+    open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any> = MutableList(0) {}) {
         onScrollChanged()
     }
 
     open fun onScrollChanged() {}
 
+    val viewPosition: Int
+        get() = adapter.positionCalibrate(adapterPosition)
+
     val item: ITEM
-        get() = adapter.items[adapterPosition].second as ITEM
+        get() = adapter.items[viewPosition].second as ITEM
 
     val beforeItemViewType: Int
-        get() = if (adapterPosition > 0) adapter.getItemViewType(adapterPosition - 1) else -1
+        get() = if (viewPosition > 0) adapter.getItemViewType(viewPosition - 1) else -1
 
     val afterItemViewType: Int
-        get() = if (adapterPosition < adapter.itemCount - 1) adapter.getItemViewType(adapterPosition + 1) else -1
+        get() = if (viewPosition < adapter.itemCount - 1) adapter.getItemViewType(viewPosition + 1) else -1
 
     val context: Context
         get() = itemView.context

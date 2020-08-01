@@ -13,7 +13,7 @@ class MainViewModel : ViewModel() {
         models.observe(lifecycleOwner, Observer { unit(it) })
 
         models.value = ArrayList<Model>().apply {
-            for (i in 1..100) {
+            for (i in 1..10) {
                 add(Model(title = "$i, Hello", description = "description here"))
             }
         }

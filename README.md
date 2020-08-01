@@ -6,6 +6,7 @@ This aims to advance the use of `RecyclerView` for android.
 * It is easy to use `Data-binding` to ViewHolder
 * You can easily apply `DiffUtil` as Annotation
 * Various animations can be applied to the list (Inspired by `PageTransformer`)
+* Infinite loop scroll (Inspired by `InfiniteViewPager`)
 
 <br/><br/>
 
@@ -57,6 +58,37 @@ class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
 
     override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
 
+}
+```
+
+<br/><br/>
+
+## Demo; Infinite loop scroll
+
+![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot-2.gif)
+
+<br/>
+
+`InfiniteRecyclerViewAdapter`
+
+```kotlin
+class ModelAdapter: InfiniteRecyclerViewAdapter() {
+
+    override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
+        return ModelHolder(this)
+    }
+
+}
+```
+
+<br/>
+
+`scrollInit` move to infinite position 0
+
+```kotlin
+adapter.notifyDataSetChanged(scrollInit = true) {
+    // TODO adapter data change
+    // ex) adapter.add(0), adapter.removeAt(1) ..
 }
 ```
 
@@ -139,8 +171,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.translationY = scrolled[0] * 3f * motionBias
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
-
-    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
+//    BR.item is injected from the AdvancedDataBindingViewHolder
+//    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.item, item) }
 
 }
 ```
@@ -157,9 +189,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
-            name="model"
+            name="item"
             type="kim.uno.recyclerview.ui.main.Model" />
     </data>
 

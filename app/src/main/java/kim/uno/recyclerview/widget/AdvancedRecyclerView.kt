@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 class AdvancedRecyclerView : RecyclerView {
 
@@ -24,7 +25,7 @@ class AdvancedRecyclerView : RecyclerView {
     var scrollUnit: ((Int) -> Unit)? = null
 
     var motion = FloatArray(2)
-    private var motionIdleAnimator: Animator? = null
+    var motionIdleAnimator: Animator? = null
 
     init {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -32,6 +33,7 @@ class AdvancedRecyclerView : RecyclerView {
         addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+
                 layoutManager?.let { layoutManager ->
 
                     var isHorizontally = when {
@@ -59,11 +61,19 @@ class AdvancedRecyclerView : RecyclerView {
         })
     }
 
+    fun setOrientation(orientation: Int) {
+        when (layoutManager) {
+            is LinearLayoutManager -> (layoutManager as LinearLayoutManager).orientation = orientation
+            is StaggeredGridLayoutManager -> (layoutManager as StaggeredGridLayoutManager).orientation = orientation
+        }
+    }
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         ev?.let {
             motion[0] = it.x
             motion[1] = it.y
         }
+
         return super.dispatchTouchEvent(ev)
     }
 

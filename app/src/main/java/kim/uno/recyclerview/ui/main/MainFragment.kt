@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
         itemView.recycler_view.adapter = ModelAdapter().apply {
             viewModel = ViewModelProviders.of(this@MainFragment).get(MainViewModel::class.java)
             viewModel.models(this@MainFragment) { models ->
-                notifyDataSetChanged {
+                notifyDataSetChanged(scrollInit = true) {
                     it.addAll(items = models!!)
                 }
             }

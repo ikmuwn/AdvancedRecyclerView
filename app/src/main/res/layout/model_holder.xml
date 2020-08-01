@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="model"
+            name="item"
             type="kim.uno.recyclerview.ui.main.Model" />
     </data>
 
@@ -20,7 +20,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{model.title}"
+            android:text="@{item.title}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{model.description}"
+            android:text="@{item.description}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 

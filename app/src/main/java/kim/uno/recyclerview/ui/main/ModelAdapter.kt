@@ -1,9 +1,9 @@
 package kim.uno.recyclerview.ui.main
 
-import kim.uno.recyclerview.widget.AdvancedRecyclerViewAdapter
 import kim.uno.recyclerview.widget.AdvancedViewHolder
+import kim.uno.recyclerview.widget.InfiniteRecyclerViewAdapter
 
-class ModelAdapter: AdvancedRecyclerViewAdapter() {
+class ModelAdapter: InfiniteRecyclerViewAdapter() {
 
     override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
         return ModelHolder(this)
