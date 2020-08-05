@@ -46,8 +46,9 @@ class AdvancedRecyclerViewDiffCallback(
                         }
                     }
 
-            return isAnnotationPresent
+            return !isAnnotationPresent && before == after
         }
+
         return false
     }
 

@@ -4,14 +4,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHolder<Any>>() {
 
-    var recyclerView: RecyclerView? = null
+    open var recyclerView: RecyclerView? = null
+        set(value) {
+            field = value
+            if (this is InfiniteRecyclerViewAdapter) {
+                (value?.layoutManager as? LinearLayoutManager)?.let {
+                    it.scrollToPositionWithOffset(initPosition, 0)
+                }
+            }
+        }
     var items = ArrayList<Pair<Int, Any>>()
     val holders = ArrayList<AdvancedViewHolder<*>>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> = onCreateHolder(viewType) as AdvancedViewHolder<Any>
+    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> = onCreateHolder(viewType) as AdvancedViewHolder<Any>
 
     abstract fun onCreateHolder(viewType: Int): AdvancedViewHolder<*>
 
@@ -49,7 +58,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         super.onViewDetachedFromWindow(holder)
     }
 
-    fun notifyDataSetChanged(detectMoves: Boolean = true, scrollInit: Boolean = false, unit: (AdvancedRecyclerViewAdapter) -> Unit) {
+    fun notifyDataSetChanged(detectMoves: Boolean = true, unit: (AdvancedRecyclerViewAdapter) -> Unit) {
         val transactionPairs = ArrayList(items)
         unit(this)
 
@@ -62,26 +71,25 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
             ).dispatchUpdatesTo(this)
         }
 
-        if (scrollInit) {
-            recyclerView?.layoutManager?.let {
-                val layoutManager = (it as LinearLayoutManager)
-                val position = if (this is InfiniteRecyclerViewAdapter) initPosition else 0
-                layoutManager.scrollToPositionWithOffset(position, 0)
+        if (this is InfiniteRecyclerViewAdapter) {
+            when (val layoutManager = recyclerView?.layoutManager) {
+                is LinearLayoutManager -> layoutManager.scrollToPositionWithOffset(initPosition, 0)
+                is StaggeredGridLayoutManager -> layoutManager.scrollToPositionWithOffset(initPosition, 0)
             }
         }
     }
 
-    fun add(index: Int = items.size, item: Any = Any(), type: Int = 0) {
-        items.add(index, type to item)
+    open fun add(index: Int = items.size, item: Any? = null, type: Int = 0) {
+        items.add(index, type to (item?: Any()))
     }
 
-    fun addAll(index: Int = this.items.size, items: ArrayList<*>, type: Int = 0) {
-        items.forEachIndexed { i, item -> add(index = index + i, item = item, type = type) }
+    fun addAll(index: Int = this.items.size, items: ArrayList<*>?, type: Int = 0) {
+        items?.forEachIndexed { i, item -> add(index = index + i, item = item, type = type) }
     }
 
     fun remove(item: Any): Boolean {
         return items.firstOrNull {
-            it.first == item
+            it.second == item
         }?.let {
             items.remove(it)
         } ?: false
@@ -93,7 +101,19 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         return hasIndex
     }
 
-    fun clear() {
+    fun get(index: Int): Any {
+        return try {
+            items[index]
+        } catch (e: Throwable) {
+            Any()
+        }
+    }
+
+    fun contains(item: Any): Boolean {
+        return items.firstOrNull { it.second == item } != null
+    }
+
+    open fun clear() {
         items.clear()
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AdvancedRecyclerView">
+        <attr name="flingOffset" format="dimension" />
+        <attr name="flingEnable" format="boolean" />
+        <attr name="flingGravity" format="enum">
+            <enum name="START" value="-1" />
+            <enum name="CENTER" value="0" />
+            <enum name="END" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>
