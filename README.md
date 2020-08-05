@@ -30,8 +30,6 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
 
-    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
-
 }
 ```
 
@@ -69,7 +67,7 @@ class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
 
 <br/>
 
-`InfiniteRecyclerViewAdapter`
+`InfiniteRecyclerViewAdapter` Just change it
 
 ```kotlin
 class ModelAdapter: InfiniteRecyclerViewAdapter() {
@@ -110,10 +108,18 @@ recyclerView.scrollUnit = { scroll ->
 
 ### AdvancedViewRecyclerView, AdvancedViewHolder
 
-`scroll: Int` Scroll value from start) <br/>
-`scrolled: Array<Int>(10)` Recent the difference from the previous scroll value) <br/>
+`scroll: Int` Scroll value from start <br/>
+`scrolled: Array<Int>(10)` Recent the difference from the previous scroll value <br/>
 `viewBias: Float` itemView bias on the screen (start 0f ~ 1f end) <br/>
 `motionBias: Float` itemView bias on the screen from touch point (start 0f ~ 1f end)
+
+<br/>
+
+### Fling effect
+
+`flingEnable: Boolean` Fling effect usable (default: false) <br/>
+`flingOffset: Int` Start margin of first child <br/>
+`flingGravity: Int` Fling gravity (start, center, right) <br/>
 
 <br/><br/>
 
@@ -171,8 +177,11 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.translationY = scrolled[0] * 3f * motionBias
         itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
+
 //    BR.item is injected from the AdvancedDataBindingViewHolder
-//    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.item, item) }
+//    override fun getVariable() = super.getVariable().apply { 
+//        add(BR.item to item)
+//    }
 
 }
 ```
