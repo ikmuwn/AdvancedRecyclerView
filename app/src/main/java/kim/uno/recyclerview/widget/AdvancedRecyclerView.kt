@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -130,11 +131,13 @@ class AdvancedRecyclerView : RecyclerView {
 
     fun isHorizontally(): Boolean {
         return layoutManager?.let {
-            when {
-                it.canScrollHorizontally() -> true
-                it.canScrollVertically() -> false
-                else -> null
-            }
+            it.canScrollHorizontally()
+        } ?: false
+    }
+
+    fun isVertically(): Boolean {
+        return layoutManager?.let {
+            it.canScrollVertically()
         } ?: false
     }
 
@@ -196,40 +199,85 @@ class AdvancedRecyclerView : RecyclerView {
     override fun fling(velocityX: Int, velocityY: Int): Boolean {
         if (flingEnable && layoutManager is LinearLayoutManager) {
             val layoutManager = layoutManager as LinearLayoutManager
-            val firstIndex = layoutManager.findFirstVisibleItemPosition()
-            val lastIndex = layoutManager.findLastVisibleItemPosition()
-            val firstView = layoutManager.findViewByPosition(firstIndex)
-            val lastView = layoutManager.findViewByPosition(lastIndex)
+            val firstItem = layoutManager.findFirstVisibleItemPosition()
+            val lastItem = layoutManager.findLastVisibleItemPosition()
+            if (firstItem == lastItem) return false
 
-            if (firstView != null && lastView != null) {
-
-                // 횡스크롤
-                if (layoutManager.orientation == HORIZONTAL) {
-
-                    var offset = 0
+            when {
+                isHorizontally() -> {
                     when (flingGravity) {
-                        FLING_GRAVITY_START -> offset = flingOffset
-                        FLING_GRAVITY_CENTER -> offset = (measuredWidth - lastView.width) / 2
-                        FLING_GRAVITY_END -> offset = measuredWidth - lastView.width - flingOffset
+                        FLING_GRAVITY_START -> {
+                            val first = layoutManager.findViewByPosition(firstItem)!!
+                            val after = layoutManager.findViewByPosition(firstItem + 1)!!
+
+                            val offset = paddingLeft + flingOffset
+                            smoothScrollBy(0,
+                                    if (velocityY < 0) first.right - offset - first.width
+                                    else after.left - offset)
+                        }
+                        FLING_GRAVITY_CENTER -> {
+                            val last = layoutManager.findViewByPosition(lastItem)!!
+                            val offset = (measuredWidth - last.width) / 2 + flingOffset
+
+                            var center: View? = null
+                            for (i in 0 until childCount) {
+                                val child = getChildAt(i)
+                                if (child.left > offset) {
+                                    if (velocityY >= 0) center = child
+                                    break
+                                }
+                                center = child
+                            }
+
+                            smoothScrollBy(center!!.left - offset, 0)
+                        }
+                        FLING_GRAVITY_END -> {
+                            val before = layoutManager.findViewByPosition(lastItem - 1)!!
+                            val last = layoutManager.findViewByPosition(lastItem)!!
+                            val offset = measuredWidth - last.width - flingOffset - paddingRight
+                            smoothScrollBy(0,
+                                    if (velocityY < 0) before.right - offset - before.width
+                                    else last.left - offset)
+                        }
                     }
+                }
 
-                    val frontMargin = offset
-                    val endMargin = offset + firstView.width
-                    if (velocityX > 0) smoothScrollBy(lastView.left - frontMargin, 0)
-                    else smoothScrollBy(-(endMargin - firstView.right), 0)
-                } else {
-
-                    var offset = 0
+                isVertically() -> {
                     when (flingGravity) {
-                        FLING_GRAVITY_START -> offset = flingOffset
-                        FLING_GRAVITY_CENTER -> offset = (measuredHeight - lastView.height) / 2
-                        FLING_GRAVITY_END -> offset = measuredHeight - lastView.height - flingOffset
-                    }
+                        FLING_GRAVITY_START -> {
+                            val first = layoutManager.findViewByPosition(firstItem)!!
+                            val after = layoutManager.findViewByPosition(firstItem + 1)!!
 
-                    val frontMargin = offset
-                    val endMargin = offset + firstView.height
-                    if (velocityY > 0) smoothScrollBy(0, lastView.top - frontMargin)
-                    else smoothScrollBy(0, -(endMargin - firstView.bottom))
+                            val offset = paddingTop + flingOffset
+                            smoothScrollBy(0,
+                                    if (velocityY < 0) first.bottom - offset - first.height
+                                    else after.top - offset)
+                        }
+                        FLING_GRAVITY_CENTER -> {
+                            val last = layoutManager.findViewByPosition(lastItem)!!
+                            val offset = (measuredHeight - last.height) / 2 + flingOffset
+
+                            var center: View? = null
+                            for (i in 0 until childCount) {
+                                val child = getChildAt(i)
+                                if (child.top > offset) {
+                                    if (velocityY >= 0) center = child
+                                    break
+                                }
+                                center = child
+                            }
+
+                            smoothScrollBy(0, center!!.top - offset)
+                        }
+                        FLING_GRAVITY_END -> {
+                            val before = layoutManager.findViewByPosition(lastItem - 1)!!
+                            val last = layoutManager.findViewByPosition(lastItem)!!
+                            val offset = measuredHeight - last.height - flingOffset - paddingBottom
+                            smoothScrollBy(0,
+                                    if (velocityY < 0) before.bottom - offset - before.height
+                                    else last.top - offset)
+                        }
+                    }
                 }
             }
 
