@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".ui.main.UseAdapterSampleFragment">
+    tools:context=".ui.main.AdapterBindingSampleFragment">
 
     <kim.uno.recyclerview.widget.AdvancedRecyclerView
         android:id="@+id/recycler_view"

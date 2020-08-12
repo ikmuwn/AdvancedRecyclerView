@@ -2,7 +2,7 @@ package kim.uno.recyclerview
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kim.uno.recyclerview.ui.main.UseBuilderSampleFragment
+import kim.uno.recyclerview.ui.main.WithoutAdapterSampleFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 //                    .replace(R.id.container, UseBasicFragment.newInstance())
 //                    .commitNow()
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, UseBuilderSampleFragment.newInstance())
+                    .replace(R.id.container, WithoutAdapterSampleFragment.newInstance())
                     .commitNow()
         }
     }

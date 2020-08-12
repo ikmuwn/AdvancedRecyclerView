@@ -10,10 +10,10 @@ import kim.uno.recyclerview.R
 import kim.uno.recyclerview.widget.adapterOf
 import kotlinx.android.synthetic.main.main_fragment.view.*
 
-class UseBuilderSampleFragment : Fragment() {
+class WithoutAdapterSampleFragment : Fragment() {
 
     companion object {
-        fun newInstance() = UseBuilderSampleFragment()
+        fun newInstance() = WithoutAdapterSampleFragment()
     }
 
     private lateinit var viewModel: MainViewModel
@@ -33,8 +33,8 @@ class UseBuilderSampleFragment : Fragment() {
                         dataBinding = true)
                 .build()
 
-        viewModel = ViewModelProviders.of(this@UseBuilderSampleFragment).get(MainViewModel::class.java)
-        viewModel.models(this@UseBuilderSampleFragment) { models ->
+        viewModel = ViewModelProviders.of(this@WithoutAdapterSampleFragment).get(MainViewModel::class.java)
+        viewModel.models(this@WithoutAdapterSampleFragment) { models ->
             itemView.recycler_view.adapter!!.notifyDataSetChanged {
                 it.addAll(viewType = 0, items = models!!)
             }

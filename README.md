@@ -113,10 +113,8 @@ class ModelAdapter: InfiniteRecyclerViewAdapter() {
 
 <br/>
 
-`scrollInit` move to infinite position 0
-
 ```kotlin
-adapter.notifyDataSetChanged(scrollInit = true) {
+adapter.notifyDataSetChanged {
     // TODO adapter data change
     // ex) adapter.add(0), adapter.removeAt(1) ..
 }
@@ -124,7 +122,7 @@ adapter.notifyDataSetChanged(scrollInit = true) {
 
 <br/><br/>
 
-## How to supported for animator
+## How to support animator
 
 ### AdvancedViewRecyclerView
 
