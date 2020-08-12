@@ -1,8 +1,8 @@
 package kim.uno.recyclerview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kim.uno.recyclerview.ui.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
+import kim.uno.recyclerview.ui.main.UseBuilderSampleFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,8 +10,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                    .replace(R.id.container, UseBasicFragment.newInstance())
+//                    .commitNow()
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
+                    .replace(R.id.container, UseBuilderSampleFragment.newInstance())
                     .commitNow()
         }
     }

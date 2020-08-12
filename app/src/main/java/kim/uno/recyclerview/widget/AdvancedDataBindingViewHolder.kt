@@ -7,7 +7,7 @@ import kim.uno.recyclerview.BR
 open class AdvancedDataBindingViewHolder<ITEM>(adapter: AdvancedRecyclerViewAdapter, resId: Int)
     : AdvancedViewHolder<ITEM>(adapter, resId) {
 
-    private var viewDataBinding: ViewDataBinding = DataBindingUtil.bind(itemView)!!
+    val viewDataBinding: ViewDataBinding by lazy { DataBindingUtil.bind<ViewDataBinding>(itemView)!! }
 
     open fun getVariable() = ArrayList<Pair<Int, *>>().apply {
         add(BR.item to item)

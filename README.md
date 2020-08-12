@@ -10,6 +10,38 @@ This aims to advance the use of `RecyclerView` for android.
 
 <br/><br/>
 
+## Demo; How to binding
+
+### Need to make adapter and holders
+
+```kotlin
+recyclerview.adapter = ModelAdapter().apply {
+    notifyDataSetChanged {
+        it.addAll(items = models)
+    }
+}
+```
+
+<br/>
+
+### Use builder. Skip making adapters and holders
+
+```kotlin
+recyclerview.adapter = adapterOf()
+        .addHolder<Model>(
+                viewType = 0,
+                resId = R.layout.model_holder,
+                dataBinding = true)
+        .build()
+
+recyclerview.adapter!!.notifyDataSetChanged {
+    it.addAll(items = models)
+}
+```
+
+
+<br/><br/>
+
 ## Demo; Scroll with tension
 
 ![Screenshot](https://github.com/ikmuwn/AdvancedRecyclerView/raw/master/Screenshot.gif)
@@ -234,13 +266,30 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 
 <br/>
 
-### Main
+### Main (Use adapter)
 
 ```kotlin
 recyclerview.adapter = ModelAdapter().apply {
     notifyDataSetChanged {
         it.addAll(items = models)
     }
+}
+```
+
+<br/>
+
+### Main (Use builder. Skip making adapters and holders)
+
+```kotlin
+recyclerview.adapter = adapterOf()
+        .addHolder<Model>(
+                viewType = 0,
+                resId = R.layout.model_holder,
+                dataBinding = true)
+        .build()
+
+recyclerview.adapter!!.notifyDataSetChanged {
+    it.addAll(items = models)
 }
 ```
 

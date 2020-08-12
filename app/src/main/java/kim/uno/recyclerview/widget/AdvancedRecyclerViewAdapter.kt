@@ -26,12 +26,14 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
 
     override fun getItemCount() = items.size
 
+    fun getItem(position: Int) = items[positionCalibrate(position)].second
+
     final override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int) {
-        holder.onBindView(items[positionCalibrate(position)].second, positionCalibrate(position))
+        holder.onBindView(getItem(position), positionCalibrate(position))
     }
 
     override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int, payloads: MutableList<Any>) {
-        holder.onBindView(items[positionCalibrate(position)].second, positionCalibrate(position), payloads)
+        holder.onBindView(getItem(position), positionCalibrate(position), payloads)
     }
 
     override fun getItemViewType(position: Int): Int = items[positionCalibrate(position)].first
@@ -79,12 +81,12 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         }
     }
 
-    open fun add(index: Int = items.size, item: Any? = null, type: Int = 0) {
-        items.add(index, type to (item?: Any()))
+    open fun add(index: Int = items.size, item: Any? = null, viewType: Int = 0) {
+        items.add(index, viewType to (item?: Any()))
     }
 
-    fun addAll(index: Int = this.items.size, items: ArrayList<*>?, type: Int = 0) {
-        items?.forEachIndexed { i, item -> add(index = index + i, item = item, type = type) }
+    fun addAll(index: Int = this.items.size, items: ArrayList<*>?, viewType: Int = 0) {
+        items?.forEachIndexed { i, item -> add(index = index + i, item = item, viewType = viewType) }
     }
 
     fun remove(item: Any): Boolean {

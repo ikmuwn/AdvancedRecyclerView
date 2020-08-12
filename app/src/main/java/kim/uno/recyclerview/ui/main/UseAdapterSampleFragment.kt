@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProviders
 import kim.uno.recyclerview.R
 import kotlinx.android.synthetic.main.main_fragment.view.*
 
-class MainFragment : Fragment() {
+class UseAdapterSampleFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = UseAdapterSampleFragment()
     }
 
     private lateinit var viewModel: MainViewModel
@@ -25,12 +25,13 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        itemView.recycler_view.adapter = ModelAdapter().apply {
-            viewModel = ViewModelProviders.of(this@MainFragment).get(MainViewModel::class.java)
-            viewModel.models(this@MainFragment) { models ->
-                notifyDataSetChanged {
-                    it.addAll(items = models!!)
-                }
+        val adapter = ModelAdapter()
+        itemView.recycler_view.adapter = adapter
+
+        viewModel = ViewModelProviders.of(this@UseAdapterSampleFragment).get(MainViewModel::class.java)
+        viewModel.models(this@UseAdapterSampleFragment) { models ->
+            adapter.notifyDataSetChanged {
+                it.addAll(items = models!!)
             }
         }
     }
