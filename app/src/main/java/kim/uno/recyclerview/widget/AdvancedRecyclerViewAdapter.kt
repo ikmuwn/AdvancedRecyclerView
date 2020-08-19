@@ -60,7 +60,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         super.onViewDetachedFromWindow(holder)
     }
 
-    fun notifyDataSetChanged(detectMoves: Boolean = true, unit: (AdvancedRecyclerViewAdapter) -> Unit) {
+    fun notifyDataSetChanged(detectMoves: Boolean = true, unit: (AdvancedRecyclerViewAdapter) -> Unit): AdvancedRecyclerViewAdapter {
         val transactionPairs = ArrayList(items)
         unit(this)
 
@@ -79,6 +79,8 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
                 is StaggeredGridLayoutManager -> layoutManager.scrollToPositionWithOffset(initPosition, 0)
             }
         }
+
+        return this@AdvancedRecyclerViewAdapter
     }
 
     open fun add(index: Int = items.size, item: Any? = null, viewType: Int = 0) {

@@ -15,10 +15,8 @@ This aims to advance the use of `RecyclerView` for android.
 ### Need to make adapter and holders
 
 ```kotlin
-recyclerview.adapter = ModelAdapter().apply {
-    notifyDataSetChanged {
-        it.addAll(items = models)
-    }
+recyclerview.adapter = ModelAdapter().notifyDataSetChanged {
+    it.addAll(items = models)
 }
 ```
 
@@ -245,7 +243,7 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{model.title}"
+            android:text="@{item.title}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -254,7 +252,7 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{model.description}"
+            android:text="@{item.description}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -267,10 +265,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 ### Main (Use adapter)
 
 ```kotlin
-recyclerview.adapter = ModelAdapter().apply {
-    notifyDataSetChanged {
-        it.addAll(items = models)
-    }
+recyclerview.adapter = ModelAdapter().notifyDataSetChanged {
+    it.addAll(items = models)
 }
 ```
 
