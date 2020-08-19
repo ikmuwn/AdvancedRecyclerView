@@ -84,7 +84,7 @@ class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
         itemView.iv_parallax.translationY = parallaxRange * viewBias
     }
 
-    override fun getVariable() = ArrayMap<Int, Any>().apply { put(BR.model, item) }
+    override fun getVariable() = super.getVariable().apply { add(BR.item to item) }
 
 }
 ```
