@@ -228,7 +228,7 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
     <data>
         <variable
             name="item"
-            type="kim.uno.recyclerview.ui.main.Model" />
+            type="kim.uno.recyclerview.ui.fragment.Model" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

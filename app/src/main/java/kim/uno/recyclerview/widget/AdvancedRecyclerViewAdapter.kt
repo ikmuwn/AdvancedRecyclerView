@@ -20,11 +20,15 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     var items = ArrayList<Pair<Int, Any>>()
     val holders = ArrayList<AdvancedViewHolder<*>>()
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> = onCreateHolder(viewType) as AdvancedViewHolder<Any>
+    @Suppress("UNCHECKED_CAST")
+    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> =
+        onCreateHolder(viewType) as AdvancedViewHolder<Any>
 
     abstract fun onCreateHolder(viewType: Int): AdvancedViewHolder<*>
 
     override fun getItemCount() = items.size
+
+    fun get(position: Int) = items.getOrNull(positionCalibrate(position))
 
     fun getItem(position: Int) = items[positionCalibrate(position)].second
 
@@ -87,6 +91,10 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         items.add(index, viewType to (item?: Any()))
     }
 
+    open fun add(index: Int = items.size, pair: Pair<Int, Any>) {
+        items.add(index, pair)
+    }
+
     fun addAll(index: Int = this.items.size, items: ArrayList<*>?, viewType: Int = 0) {
         items?.forEachIndexed { i, item -> add(index = index + i, item = item, viewType = viewType) }
     }
@@ -103,14 +111,6 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         val hasIndex = index > -1 && index < items.size
         if (hasIndex) items.removeAt(index)
         return hasIndex
-    }
-
-    fun get(index: Int): Any {
-        return try {
-            items[index]
-        } catch (e: Throwable) {
-            Any()
-        }
     }
 
     fun contains(item: Any): Boolean {

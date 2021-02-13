@@ -4,10 +4,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import kim.uno.recyclerview.BR
 
-open class AdvancedDataBindingViewHolder<ITEM>(adapter: AdvancedRecyclerViewAdapter, resId: Int)
+open class AdvancedViewBindingHolder<ITEM>(adapter: AdvancedRecyclerViewAdapter, resId: Int)
     : AdvancedViewHolder<ITEM>(adapter, resId) {
 
-    val viewDataBinding: ViewDataBinding by lazy { DataBindingUtil.bind<ViewDataBinding>(itemView)!! }
+    val viewDataBinding by lazy { DataBindingUtil.bind<ViewDataBinding>(itemView)!! }
 
     open fun getVariable() = ArrayList<Pair<Int, *>>().apply {
         add(BR.item to item)

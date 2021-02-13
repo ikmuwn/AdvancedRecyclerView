@@ -2,11 +2,24 @@ package kim.uno.recyclerview.widget
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 
-open class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, resId: Int)
-    : RecyclerView.ViewHolder(LayoutInflater.from(adapter.recyclerView!!.context).inflate(resId, adapter.recyclerView, false)) {
+open class AdvancedViewHolder<ITEM> : RecyclerView.ViewHolder {
+
+    val adapter: AdvancedRecyclerViewAdapter
+
+    constructor(adapter: AdvancedRecyclerViewAdapter, resId: Int)
+            : this(adapter, LayoutInflater.from(adapter.recyclerView!!.context)
+            .inflate(resId, adapter.recyclerView, false))
+
+    constructor(adapter: AdvancedRecyclerViewAdapter, itemView: View) : super(itemView) {
+        this.adapter = adapter
+    }
+
+    val inflater: LayoutInflater
+        get() = LayoutInflater.from(adapter.recyclerView!!.context)
 
     open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any> = MutableList(0) {}) {
         onScrollChanged()
@@ -18,6 +31,7 @@ open class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, re
         get() = adapter.positionCalibrate(adapterPosition)
 
     val item: ITEM
+        @Suppress("UNCHECKED_CAST")
         get() = adapter.items[viewPosition].second as ITEM
 
     val beforeItemViewType: Int
@@ -31,14 +45,14 @@ open class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, re
 
     val scroll: Int
         get() = if (adapter.recyclerView is AdvancedRecyclerView) {
-            (adapter.recyclerView as AdvancedRecyclerView)?.scroll
+            (adapter.recyclerView as AdvancedRecyclerView).scroll
         } else {
             null
         } ?: 0
 
     val scrolled: IntArray
         get() = if (adapter.recyclerView is AdvancedRecyclerView) {
-            (adapter.recyclerView as AdvancedRecyclerView)?.scrolled
+            (adapter.recyclerView as AdvancedRecyclerView).scrolled
         } else {
             null
         } ?: IntArray(AdvancedRecyclerView.CACHED_SCROLL)

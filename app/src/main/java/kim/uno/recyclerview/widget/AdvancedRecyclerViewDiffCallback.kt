@@ -4,11 +4,11 @@ import androidx.recyclerview.widget.DiffUtil
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ItemDiffField
+annotation class ItemDiff
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ContentsDiffField
+annotation class ContentsDiff
 
 class AdvancedRecyclerViewDiffCallback(
         private val before: ArrayList<Pair<Int, Any>>,
@@ -19,11 +19,11 @@ class AdvancedRecyclerViewDiffCallback(
     override fun getNewListSize() = after.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return areSame(oldItemPosition, newItemPosition, ItemDiffField::class.java, false)
+        return areSame(oldItemPosition, newItemPosition, ItemDiff::class.java, false)
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return areSame(oldItemPosition, newItemPosition, ContentsDiffField::class.java, true)
+        return areSame(oldItemPosition, newItemPosition, ContentsDiff::class.java, true)
     }
 
     private fun areSame(oldItemPosition: Int, newItemPosition: Int, clazz: Class<out Annotation>, default: Boolean): Boolean {
@@ -46,7 +46,7 @@ class AdvancedRecyclerViewDiffCallback(
                         }
                     }
 
-            return !isAnnotationPresent && before == after
+            return !isAnnotationPresent || before == after
         }
 
         return false
@@ -58,7 +58,7 @@ class AdvancedRecyclerViewDiffCallback(
         if (before.second.javaClass.name == after.second.javaClass.name) {
             val payload = ArrayList<String>()
             before.second.javaClass.declaredFields
-                    .filter { it.isAnnotationPresent(ContentsDiffField::class.java) }
+                    .filter { it.isAnnotationPresent(ContentsDiff::class.java) }
                     .forEach {
                         it.isAccessible = true
                         val beforeValue = it.get(before.second)

@@ -18,14 +18,20 @@ class AdvancedAdapterBuilder {
             viewType: Int = 0,
             resId: Int,
             dataBinding: Boolean = false,
-            binder: ((AdvancedViewHolder<ITEM>) -> Unit)? = null): AdvancedAdapterBuilder {
+            binder: ((AdvancedViewHolder<ITEM>) -> Unit)? = null,
+            scroll: ((AdvancedViewHolder<ITEM>) -> Unit)? = null): AdvancedAdapterBuilder {
         createUnit[viewType] = {
             if (dataBinding) {
                 lateinit var holder: AdvancedViewHolder<ITEM>
-                holder = object : AdvancedDataBindingViewHolder<ITEM>(adapter, resId) {
+                holder = object : AdvancedViewBindingHolder<ITEM>(adapter, resId) {
                     override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
                         super.onBindView(item, position, payloads)
                         binder?.invoke(holder)
+                    }
+
+                    override fun onScrollChanged() {
+                        super.onScrollChanged()
+                        scroll?.invoke(this)
                     }
                 }
                 holder
@@ -35,6 +41,11 @@ class AdvancedAdapterBuilder {
                     override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
                         super.onBindView(item, position, payloads)
                         binder?.invoke(holder)
+                    }
+
+                    override fun onScrollChanged() {
+                        super.onScrollChanged()
+                        scroll?.invoke(this)
                     }
                 }
 

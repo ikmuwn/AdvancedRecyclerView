@@ -1,13 +1,14 @@
-package kim.uno.recyclerview.ui.main
+package kim.uno.recyclerview.ui
 
 import kim.uno.recyclerview.R
-import kim.uno.recyclerview.widget.AdvancedDataBindingViewHolder
+import kim.uno.recyclerview.data.Model
+import kim.uno.recyclerview.widget.AdvancedViewBindingHolder
 import kim.uno.recyclerview.widget.AdvancedRecyclerViewAdapter
 import kotlin.math.abs
 import kotlin.math.min
 
-class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
-    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_holder) {
+class ModelBindingHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedViewBindingHolder<Model>(adapter, R.layout.model_holder) {
 
     override fun onScrollChanged() {
         super.onScrollChanged()

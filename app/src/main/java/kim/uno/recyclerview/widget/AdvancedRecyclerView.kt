@@ -114,7 +114,7 @@ class AdvancedRecyclerView : RecyclerView {
         init(attrs)
     }
 
-    open fun init(attrs: AttributeSet?) {
+    private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AdvancedRecyclerView)
         flingOffset = typedArray.getDimensionPixelSize(R.styleable.AdvancedRecyclerView_flingOffset, 0)
         flingEnable = typedArray.getBoolean(R.styleable.AdvancedRecyclerView_flingEnable, false)
