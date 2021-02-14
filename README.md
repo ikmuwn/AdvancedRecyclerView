@@ -352,19 +352,19 @@ DiffUtil `calculateDiff` and `dispatchUpdatesTo` work automatically
 
 #### Inject annotation into the model
 
-`@ItemDiffField` DiffUtil.areItemsTheSame <br/>
-`@ContentsDiffField` DiffUtil.areContentsTheSame
+`@ItemDiff` DiffUtil.areItemsTheSame <br/>
+`@ContentsDiff` DiffUtil.areContentsTheSame
 
 ```kotlin
 data class Model(
 
-    @ItemDiffField
+    @ItemDiff
     var id: String,
 
-    @ContentsDiffField
+    @ContentsDiff
     var title: String,
 
-    @ContentsDiffField
+    @ContentsDiff
     var description: String,
 
     var createdDate: String
