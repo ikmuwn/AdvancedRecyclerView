@@ -10,33 +10,13 @@ This aims to advance the use of `RecyclerView` for android.
 
 <br/><br/>
 
-## Demo; How to binding
+## It supports
 
-### Need to make adapter and holders
+The extends relationship must be replaced.
 
-```kotlin
-recyclerview.adapter = ModelAdapter().notifyDataSetChanged {
-    it.addAll(items = models)
-}
-```
-
-<br/>
-
-### Use builder. Skip making adapters and holders
-
-```kotlin
-recyclerview.adapter = adapterOf()
-        .addHolder<Model>(
-                viewType = 0,
-                resId = R.layout.model_holder,
-                dataBinding = true)
-        .build()
-
-recyclerview.adapter!!.notifyDataSetChanged {
-    it.addAll(items = models)
-}
-```
-
+* RecyclerView -> `AdvancedRecyclerView`
+* RecyclerView.Adapter -> `AdvancedRecyclerViewAdapter`
+* RecyclerView.ViewHolder -> `AdvancedViewHolder`
 
 <br/><br/>
 
@@ -50,14 +30,21 @@ Alpha, Scroll interpolate, Rotation
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
-    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_holder) {
+    : AdvancedViewHolder<Model>(adapter, R.layout.model_holder) {
+
+    private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
+
+    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
+        modelHolderBinding.item = item
+    }
 
     override fun onScrollChanged() {
         super.onScrollChanged()
         val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
-        itemView.alpha = 0.5f + 0.5f * alphaBias
-        itemView.translationY = scrolled[0] * 3f * motionBias
-        itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+        modelHolderBinding.root.alpha = 0.5f + 0.5f * alphaBias
+        modelHolderBinding.root.translationY = scrolled[0] * 3f * motionBias
+        modelHolderBinding.root.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
 
 }
@@ -74,17 +61,21 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 `onScrollChanged` Alpha, Scroll interpolate, Rotation
 
 ```kotlin
-class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
-    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_parallax_holder) {
+class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedViewHolder<Model>(adapter, R.layout.model_holder) {
 
-    val parallaxRange = (itemView.iv_parallax.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin / 2
+    private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
+    private val parallaxRange = (itemView.iv_parallax.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin / 2
+
+    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
+        modelHolderBinding.item = item
+    }
 
     override fun onScrollChanged() {
         super.onScrollChanged()
-        itemView.iv_parallax.translationY = parallaxRange * viewBias
+        modelHolderBinding.iv_parallax.translationY = parallaxRange * viewBias
     }
-
-    override fun getVariable() = super.getVariable().apply { add(BR.item to item) }
 
 }
 ```
@@ -100,22 +91,7 @@ class ModelParallaxHolder(adapter: AdvancedRecyclerViewAdapter)
 `InfiniteRecyclerViewAdapter` Just change it
 
 ```kotlin
-class ModelAdapter: InfiniteRecyclerViewAdapter() {
-
-    override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
-        return ModelHolder(this)
-    }
-
-}
-```
-
-<br/>
-
-```kotlin
-adapter.notifyDataSetChanged {
-    // TODO adapter data change
-    // ex) adapter.add(0), adapter.removeAt(1) ..
-}
+class ModelAdapter: InfiniteRecyclerViewAdapter() // AdvancedRecyclerViewAdapter
 ```
 
 <br/><br/>
@@ -196,20 +172,22 @@ Instead of `RecyclerView.ViewHolder` <br/>
 
 ```kotlin
 class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
-    : AdvancedDataBindingViewHolder<Model>(adapter, R.layout.model_holder) {
+    : AdvancedViewHolder<Model>(adapter, R.layout.model_holder) {
+
+    private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
+
+    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
+        modelHolderBinding.item = item
+    }
 
     override fun onScrollChanged() {
         super.onScrollChanged()
         val alphaBias = 1f - abs(viewBias - 0.5f) / 0.5f
-        itemView.alpha = 0.5f + 0.5f * alphaBias
-        itemView.translationY = scrolled[0] * 3f * motionBias
-        itemView.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
+        modelHolderBinding.root.alpha = 0.5f + 0.5f * alphaBias
+        modelHolderBinding.root.translationY = scrolled[0] * 3f * motionBias
+        modelHolderBinding.root.rotationX = -min(20f, 20f * scrolled[0] / itemView.height * (1f - motionBias))
     }
-
-//    BR.item is injected from the AdvancedDataBindingViewHolder
-//    override fun getVariable() = super.getVariable().apply { 
-//        add(BR.item to item)
-//    }
 
 }
 ```
@@ -262,29 +240,85 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 
 <br/>
 
-### Main (Use adapter)
+### Main adapter setup
+
+#### OPTION 1 (Make adapter, holder)
 
 ```kotlin
-recyclerview.adapter = ModelAdapter().notifyDataSetChanged {
-    it.addAll(items = models)
+recyclerview.adapter = ModelAdapter()
+```
+
+```kotlin
+class ModelAdapter: AdvancedRecyclerViewAdapter() {
+    override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
+        return ModelHolder(this)
+    }
 }
 ```
 
-<br/>
+```kotlin
+class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedViewHolder<Model>(adapter, R.layout.model_holder) {
 
-### Main (Use builder. Skip making adapters and holders)
+    private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
+
+    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
+        modelHolderBinding.item = item
+    }
+}
+```
+
+#### OPTION 2 (Use builder adapter. make holder)
 
 ```kotlin
 recyclerview.adapter = adapterOf()
-        .addHolder<Model>(
-                viewType = 0,
-                resId = R.layout.model_holder,
-                dataBinding = true)
-        .build()
+    .addHolder(
+        viewType = 0, 
+        holder = ModelHolder::class.java)
+    .build()
+```
 
-recyclerview.adapter!!.notifyDataSetChanged {
-    it.addAll(items = models)
+```kotlin
+class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
+    : AdvancedViewHolder<Model>(adapter, R.layout.model_holder) {
+
+    private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
+
+    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
+        super.onBindView(item, position, payloads)
+        modelHolderBinding.item = item
+    }
 }
+```
+
+#### OPTION 3 (Use builder adapter, holder with view binding)
+
+```kotlin
+val binding = ModelHolderBinding.inflate(layoutInflater)
+recyclerview.adapter = adapterOf()
+    .addHolder<Model, ModelHolderBinding>(
+        viewType = 0,
+        binding = binding,
+        binder = { holder ->
+            binding.item = holder.item
+        })
+.build()
+```
+
+#### OPTION 4 (Use builder adapter, holder)
+
+```kotlin
+val binding = ModelHolderBinding.inflate(layoutInflater)
+recyclerview.adapter = adapterOf()
+    .addHolder<Model>(
+        viewType = 0,
+        resId = R.layout.model_holder,
+        binder = { holder ->
+            holder.itemView.title.text = holder.item.title
+            holder.itemView.description.text = holder.item.description
+        })
+    .build()
 ```
 
 <br/>

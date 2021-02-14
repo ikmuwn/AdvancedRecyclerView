@@ -6,7 +6,7 @@ import kim.uno.recyclerview.widget.InfiniteRecyclerViewAdapter
 class ModelAdapter: InfiniteRecyclerViewAdapter() {
 
     override fun onCreateHolder(viewType: Int): AdvancedViewHolder<*> {
-        return ModelBindingHolder(this)
+        return ModelHolder(this)
     }
 
 }

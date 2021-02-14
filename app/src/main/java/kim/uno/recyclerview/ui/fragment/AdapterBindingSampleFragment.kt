@@ -24,9 +24,7 @@ class AdapterBindingSampleFragment : BaseFragment() {
     }
 
     private fun loadModels() {
-        val adapter = ModelAdapter()
-        binding.recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged {
+        binding.recyclerView.adapter = ModelAdapter().notifyDataSetChanged {
             it.addAll(items = viewModel.loadModels())
         }
     }
