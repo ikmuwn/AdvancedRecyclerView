@@ -77,7 +77,7 @@ class AdvancedRecyclerView : RecyclerView {
 
                 layoutManager?.let { layoutManager ->
 
-                    var isHorizontally = when {
+                    val isHorizontally = when {
                         layoutManager.canScrollHorizontally() -> true
                         layoutManager.canScrollVertically() -> false
                         else -> null
@@ -123,23 +123,14 @@ class AdvancedRecyclerView : RecyclerView {
     }
 
     fun setOrientation(orientation: Int) {
-        when (layoutManager) {
-            is LinearLayoutManager -> (layoutManager as LinearLayoutManager).orientation = orientation
-            is StaggeredGridLayoutManager -> (layoutManager as StaggeredGridLayoutManager).orientation = orientation
+        when (val layoutManager = layoutManager) {
+            is LinearLayoutManager -> layoutManager.orientation = orientation
+            is StaggeredGridLayoutManager -> layoutManager.orientation = orientation
         }
     }
 
-    fun isHorizontally(): Boolean {
-        return layoutManager?.let {
-            it.canScrollHorizontally()
-        } ?: false
-    }
-
-    fun isVertically(): Boolean {
-        return layoutManager?.let {
-            it.canScrollVertically()
-        } ?: false
-    }
+    fun isHorizontally() = layoutManager?.canScrollHorizontally() ?: false
+    fun isVertically() = layoutManager?.canScrollVertically() ?: false
 
     override fun getAdapter(): AdvancedRecyclerViewAdapter? {
         return super.getAdapter() as? AdvancedRecyclerViewAdapter

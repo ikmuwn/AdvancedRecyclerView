@@ -306,7 +306,9 @@ recyclerview.adapter = adapterOf()
 .build()
 ```
 
-#### OPTION 4 (Use builder adapter, holder)
+#### ~OPTION 4 (Use builder adapter, holder)~
+
+The 'kotlin-android-extensions' Gradle plugin is deprecated.
 
 ```kotlin
 val binding = ModelHolderBinding.inflate(layoutInflater)

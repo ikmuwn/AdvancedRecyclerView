@@ -17,7 +17,7 @@ class AdapterBindingSampleFragment : BaseFragment() {
     private lateinit var binding: MainFragmentBinding
     private val viewModel by activityViewModels<MainViewModel>()
 
-    override fun onCreateViewOnce(inflater: LayoutInflater): View? {
+    override fun onCreateViewOnce(inflater: LayoutInflater): View {
         binding = MainFragmentBinding.inflate(inflater)
         loadModels()
         return binding.root

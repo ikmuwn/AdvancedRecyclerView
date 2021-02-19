@@ -6,17 +6,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 
-open class AdvancedViewHolder<ITEM> : RecyclerView.ViewHolder {
-
-    val adapter: AdvancedRecyclerViewAdapter
+open class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, itemView: View)
+    : RecyclerView.ViewHolder(itemView) {
 
     constructor(adapter: AdvancedRecyclerViewAdapter, resId: Int)
             : this(adapter, LayoutInflater.from(adapter.recyclerView!!.context)
             .inflate(resId, adapter.recyclerView, false))
-
-    constructor(adapter: AdvancedRecyclerViewAdapter, itemView: View) : super(itemView) {
-        this.adapter = adapter
-    }
 
     val inflater: LayoutInflater
         get() = LayoutInflater.from(adapter.recyclerView!!.context)

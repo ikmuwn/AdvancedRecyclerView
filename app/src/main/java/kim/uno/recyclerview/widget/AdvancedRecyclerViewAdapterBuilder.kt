@@ -55,49 +55,28 @@ class AdvancedAdapterBuilder {
     fun <ITEM> addHolder(
             viewType: Int = 0,
             resId: Int,
-            dataBinding: Boolean = false,
             init: ((AdvancedViewHolder<ITEM>) -> Unit)? = null,
             binder: ((AdvancedViewHolder<ITEM>) -> Unit)? = null,
             scroll: ((AdvancedViewHolder<ITEM>) -> Unit)? = null): AdvancedAdapterBuilder {
         createUnit[viewType] = {
-            if (dataBinding) {
-                lateinit var holder: AdvancedViewHolder<ITEM>
-                holder = object : AdvancedViewBindingHolder<ITEM>(adapter, resId) {
-                    init {
-                        init?.invoke(this)
-                    }
-
-                    override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
-                        super.onBindView(item, position, payloads)
-                        binder?.invoke(holder)
-                    }
-
-                    override fun onScrollChanged() {
-                        super.onScrollChanged()
-                        scroll?.invoke(this)
-                    }
-                }
-                holder
-            } else {
-                lateinit var holder: AdvancedViewHolder<ITEM>
-                holder = object : AdvancedViewHolder<ITEM>(adapter, resId) {
-                    init {
-                        init?.invoke(this)
-                    }
-
-                    override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
-                        super.onBindView(item, position, payloads)
-                        binder?.invoke(holder)
-                    }
-
-                    override fun onScrollChanged() {
-                        super.onScrollChanged()
-                        scroll?.invoke(this)
-                    }
+            lateinit var holder: AdvancedViewHolder<ITEM>
+            holder = object : AdvancedViewHolder<ITEM>(adapter, resId) {
+                init {
+                    init?.invoke(this)
                 }
 
-                holder
+                override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
+                    super.onBindView(item, position, payloads)
+                    binder?.invoke(holder)
+                }
+
+                override fun onScrollChanged() {
+                    super.onScrollChanged()
+                    scroll?.invoke(this)
+                }
             }
+
+            holder
         }
         return this@AdvancedAdapterBuilder
     }

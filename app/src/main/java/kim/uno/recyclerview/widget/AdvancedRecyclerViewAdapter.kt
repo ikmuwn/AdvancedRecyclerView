@@ -12,9 +12,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
         set(value) {
             field = value
             if (this is InfiniteRecyclerViewAdapter) {
-                (value?.layoutManager as? LinearLayoutManager)?.let {
-                    it.scrollToPositionWithOffset(initPosition, 0)
-                }
+                (value?.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(initPosition, 0)
             }
         }
     var items = ArrayList<Pair<Int, Any>>()
@@ -22,7 +20,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
 
     @Suppress("UNCHECKED_CAST")
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvancedViewHolder<Any> =
-        onCreateHolder(viewType) as AdvancedViewHolder<Any>
+            onCreateHolder(viewType) as AdvancedViewHolder<Any>
 
     abstract fun onCreateHolder(viewType: Int): AdvancedViewHolder<*>
 
@@ -88,7 +86,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     }
 
     open fun add(index: Int = items.size, item: Any? = null, viewType: Int = 0) {
-        items.add(index, viewType to (item?: Any()))
+        items.add(index, viewType to (item ?: Any()))
     }
 
     open fun add(index: Int = items.size, pair: Pair<Int, Any>) {

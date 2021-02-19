@@ -1,7 +1,6 @@
 package kim.uno.recyclerview.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +14,11 @@ abstract class BaseFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        Log.i("uno", "onCreateView ")
+    ): View {
         if (!::itemView.isInitialized) {
             val view = onCreateViewOnce(inflater)
             if (view != null) itemView = view
-            else return super.onCreateView(inflater, container, savedInstanceState)
+            else return null!!
         }
         return itemView
     }
