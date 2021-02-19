@@ -269,6 +269,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 }
 ```
 
+<br/>
+
 #### OPTION 2 (Use builder adapter. make holder)
 
 ```kotlin
@@ -292,6 +294,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 }
 ```
 
+<br/>
+
 #### OPTION 3 (Use builder adapter, holder with view binding)
 
 ```kotlin
@@ -305,6 +309,8 @@ recyclerview.adapter = adapterOf()
         })
 .build()
 ```
+
+<br/>
 
 #### ~OPTION 4 (Use builder adapter, holder)~
 
