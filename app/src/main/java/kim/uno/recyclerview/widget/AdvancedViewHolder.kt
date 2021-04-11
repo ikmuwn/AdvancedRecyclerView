@@ -16,7 +16,11 @@ open class AdvancedViewHolder<ITEM>(val adapter: AdvancedRecyclerViewAdapter, it
     val inflater: LayoutInflater
         get() = LayoutInflater.from(adapter.recyclerView!!.context)
 
-    open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any> = MutableList(0) {}) {
+    open fun onBindView(item: ITEM, position: Int) {
+        onScrollChanged()
+    }
+
+    open fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>?) {
         onScrollChanged()
     }
 

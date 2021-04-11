@@ -37,8 +37,8 @@ class AdvancedAdapterBuilder {
                     init?.invoke(this)
                 }
 
-                override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
-                    super.onBindView(item, position, payloads)
+                override fun onBindView(item: ITEM, position: Int) {
+                    super.onBindView(item, position)
                     binder?.invoke(this)
                 }
 
@@ -65,8 +65,8 @@ class AdvancedAdapterBuilder {
                     init?.invoke(this)
                 }
 
-                override fun onBindView(item: ITEM, position: Int, payloads: MutableList<Any>) {
-                    super.onBindView(item, position, payloads)
+                override fun onBindView(item: ITEM, position: Int) {
+                    super.onBindView(item, position)
                     binder?.invoke(holder)
                 }
 

@@ -35,6 +35,7 @@ abstract class AdvancedRecyclerViewAdapter : RecyclerView.Adapter<AdvancedViewHo
     }
 
     override fun onBindViewHolder(holder: AdvancedViewHolder<Any>, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
         holder.onBindView(getItem(position), positionCalibrate(position), payloads)
     }
 

@@ -13,8 +13,8 @@ class ModelHolder(adapter: AdvancedRecyclerViewAdapter)
 
     private val modelHolderBinding by lazy { ModelHolderBinding.bind(itemView) }
 
-    override fun onBindView(item: Model, position: Int, payloads: MutableList<Any>) {
-        super.onBindView(item, position, payloads)
+    override fun onBindView(item: Model, position: Int) {
+        super.onBindView(item, position)
         modelHolderBinding.item = item
     }
 
