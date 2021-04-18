@@ -14,8 +14,6 @@
         android:clipToPadding="false"
         android:descendantFocusability="blocksDescendants"
         android:padding="10dp"
-        app:flingEnable="true"
-        app:flingGravity="START"
         tools:listitem="@layout/model_holder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
