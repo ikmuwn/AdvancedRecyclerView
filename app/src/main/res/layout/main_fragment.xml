@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".ui.fragment.AdapterBindingSampleFragment">
 
     <kim.uno.recyclerview.widget.AdvancedRecyclerView
@@ -13,9 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        app:flingEnable="true"
-        app:flingGravity="START"
         android:descendantFocusability="blocksDescendants"
-        android:padding="10dp" />
+        android:padding="10dp"
+        tools:listitem="@layout/model_holder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
